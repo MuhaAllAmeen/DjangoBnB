@@ -1,14 +1,20 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MenuLink from "./MenuLink";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useSignUpModal from "@/app/hooks/useSignUpModal";
 import LogoutButton from "../LogoutButton";
+import { useRouter } from "next/navigation";
 
-const UserNav = () => {
+interface userNavProps{
+    userId: string | null;
+}
+
+const UserNav: React.FC<userNavProps> = ({userId}) => {
     const loginModal = useLoginModal()
     const signupModal = useSignUpModal()
+    const router = useRouter()
     const [isOpen,setIsOPen]= useState(false)
     return (
         <div className="p-2 relative inline-block border rounded-full">
@@ -24,9 +30,22 @@ const UserNav = () => {
 
             {isOpen && (
                 <div className="w-[220px] flex flex-col cursor-pointer absolute top-[60px] right-0 bg-white border rounded-xl shadow-md">
-                    <MenuLink label='Log In' onClick={()=> {console.log('click'); setIsOPen(false); loginModal.open()}}/>
-                    <MenuLink label='Sign Up' onClick={()=> {console.log('click'); setIsOPen(false); signupModal.open()}}/>
+                    {userId ? (
+                        <>
+                        <MenuLink label="My Properties" onClick={()=> {setIsOPen(false); router.push('/myproperties')}}/>
+                        <MenuLink label="My Reservations" onClick={()=> {setIsOPen(false); router.push('/myreservations')}}/>
+                        <MenuLink label="My Favorites" onClick={()=> {setIsOPen(false); router.push('/myfavorites')}}/>
+                        <MenuLink label="My Inbox" onClick={()=> {setIsOPen(false); router.push('/inbox')}}/>
 
+                        <LogoutButton />
+                        </>
+                    ): (
+                        <>
+                            <MenuLink label='Log In' onClick={()=> {console.log('click'); setIsOPen(false); loginModal.open()}}/>
+                            <MenuLink label='Sign Up' onClick={()=> {console.log('click'); setIsOPen(false); signupModal.open()}}/>
+                        </>
+                    )
+                }
                 </div>
             )}
         </div>

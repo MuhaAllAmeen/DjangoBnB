@@ -7,7 +7,7 @@ import { resetAuthCookies } from "../lib/actions";
 const LogoutButton: React.FC = ()=>{
     const router = useRouter()
     const submitLogout = async()=>{
-        resetAuthCookies()
+        await resetAuthCookies()
         router.push('/')
     }
     return (

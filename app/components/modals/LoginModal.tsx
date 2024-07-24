@@ -7,7 +7,6 @@ import useLoginModal from "@/app/hooks/useLoginModal";
 import CustomButton from "../forms/CustomButton";
 import apiService from "@/app/services/apiService";
 import { handleLogin } from "@/app/lib/actions";
-import { log } from "console";
 const LoginModal = ()=>{
     const router = useRouter()
     const loginModal = useLoginModal()
@@ -19,7 +18,7 @@ const LoginModal = ()=>{
             email: email,
             password: password
         }
-        const response = await apiService.post('/api/auth/login/',JSON.stringify(formData))
+        const response = await apiService.postWithoutToken('/api/auth/login/',JSON.stringify(formData))
         if(response.access){
             handleLogin(response.user.pk, response.access, response.refresh)
             loginModal.close()
