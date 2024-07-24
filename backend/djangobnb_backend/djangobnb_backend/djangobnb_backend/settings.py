@@ -20,7 +20,7 @@ ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(" ")
 
 AUTH_USER_MODEL = 'useraccount.User'
 SITE_ID = 1
-WEBSITE_URL = 'http://localhsot:8000'
+WEBSITE_URL = 'http://localhost:8000'
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'useraccount',
     'property',
+    'chat'
 ]
 
 MIDDLEWARE = [
