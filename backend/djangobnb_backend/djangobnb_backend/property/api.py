@@ -5,6 +5,7 @@ from .models import Property,Reservation
 from .serializers import PropertiesListSerializer, PropertiesDetailSerializer, ReservationsListSerializer
 from useraccount.models import User
 from rest_framework_simplejwt.tokens import AccessToken
+
 @api_view(['GET'])
 @authentication_classes([])
 @permission_classes([])
@@ -19,13 +20,41 @@ def properties_list(request):
 
     favorites=[]
     properties = Property.objects.all()
-    
+
     is_favorite = request.GET.get('is_favorites','')
     landlord_id = request.GET.get('landlord_id','')
+    country = request.GET.get('country','')
+    category = request.GET.get('category','')
+    checkin_date = request.GET.get('checkIn','')
+    checkout_date = request.GET.get('checkOut','')
+    bedrooms = request.GET.get('numBedrooms','')
+    bathrooms = request.GET.get('numBathrooms','')
+    guests = request.GET.get('numGuests','')
+
+    if checkin_date and checkout_date:
+        exact_matches = Reservation.objects.filter(start_date = checkin_date) | Reservation.objects.filter(end_date=checkout_date)
+        overlap_matches = Reservation.objects.filter(start_date__lte=checkout_date,end_date__gte=checkin_date)
+        all_matches = []
+
+        for reservation in exact_matches | overlap_matches:
+            all_matches.append(reservation.property_id)
+        properties = properties.exclude(id__in=all_matches)
+    
     if landlord_id:
         properties = properties.filter(landlord_id=landlord_id)
     if is_favorite:
         properties = properties.filter(favorited__in=[user])
+
+    if guests: 
+        properties = properties.filter(guests__gte=guests)
+    if bedrooms: 
+        properties = properties.filter(bedrooms__gte=bedrooms)
+    if bathrooms: 
+        properties = properties.filter(bathrooms__gte=bathrooms)
+    if country: 
+        properties = properties.filter(country=country)
+    if category and category!='undefined': 
+        properties = properties.filter(category=category)
 
     if user:
         for property in properties:
