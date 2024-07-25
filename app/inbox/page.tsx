@@ -1,4 +1,3 @@
-import Image from "next/image"
 import Conversation from "../components/inbox/Conversation"
 import apiService from "../services/apiService"
 import { getUserId } from "../lib/actions"

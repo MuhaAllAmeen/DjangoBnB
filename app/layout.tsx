@@ -6,6 +6,7 @@ import Modal from './components/modals/Modal'
 import LoginModal from "./components/modals/LoginModal";
 import SignUpModal from "./components/modals/SignUpModal";
 import AddPropertyModal from "./components/modals/AddPropertyModal";
+import SearchModal from "./components/modals/SearchModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,9 +20,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const content = (
-      <p></p>
-  )
+  
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -32,6 +31,7 @@ export default function RootLayout({
         <LoginModal />
         <SignUpModal />
         <AddPropertyModal />
+        <SearchModal />
         </body>
     </html>
   );

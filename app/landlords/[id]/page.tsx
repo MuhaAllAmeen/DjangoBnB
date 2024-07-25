@@ -6,6 +6,7 @@ import Image from "next/image"
 const LandlordDetailPage = async ({params}:{params:{id: string}}) => {
     const landlord = await apiService.get(`/api/auth/${params.id}`)
     const userId = await getUserId()
+    console.log(landlord)
     return(
         <main className="max-w-[1500px] mx-auto px-6 pb-6">
 
@@ -15,7 +16,7 @@ const LandlordDetailPage = async ({params}:{params:{id: string}}) => {
                         <Image src={landlord.avatar_url} width={200} height={200} alt="landlord name" className="rounded-full "/>
                         <h1 className="mt-6 text-2xl">{landlord.name}</h1>
                         {userId != params.id && (
-                            <ContactButton />
+                            <ContactButton userId={userId} landlordId = {params.id} />
                         )}
                     </div>
                 </aside>
